@@ -1,0 +1,413 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+/* Estilos gerais */
+body {
+    font-family: Quicksand, sans-serif;
+    background-color: #FCF7F6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+/* Container de login */
+.login-container {
+    background-color: #fff;
+    padding: 60px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* Estilos de input */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* Estilos de botão */
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #E5989B;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d3dbd9;
+}
+
+/* Estilos de barra */
+.barra {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    align-items: center;
+}
+
+/* Estilos de botão de login */
+.botaologin {
+    top: 2px;
+    right: 20px;
+    background-color: #E5989B;
+    width: 8%;
+    padding: 5px;
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+}
+
+/* Estilos de link */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Estilos do card */
+.card {
+    display: inline-block;
+    width: calc(40% - 10px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    vertical-align: top;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:last-child {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    width: 60%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 16px;
+}
+
+.card-group {
+    text-align: center;
+}
+
+.card-space {
+    display: inline-block;
+    width: 20px;
+    vertical-align: top;
+}
+
+/* Estilos de botão de cadastro */
+.botaocad {
+    width: 50%;
+    padding: 0;
+    font-size: 16px;
+    background-color: #E5989B;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+h2 {
+    color: #E5989B;
+}
+
+/* Container de cadastro */
+.cadastro-container {
+    max-width: 900px;
+    margin: 90px auto;
+    padding: 20px 200px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Inputs do lado esquerdo */
+.esquerda-group input,
+.esquerda-group select {
+    width: 180%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    margin-left: -90px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+
+/* Inputs do lado direito */
+.direita-group input,
+.direita-group select {
+    width: 160%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    margin-left: 100px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+
+/* Linha de formulário */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding-right: 80px;
+}
+
+.form-col {
+    flex: 1;
+    padding-right: 10px;
+}
+
+/* Grupo de botões */
+.botao-group {
+    text-align: center;
+    padding: 8px -100px;
+}
+
+.botao-group button {
+    padding: 10px 16px;
+    background-color: white;
+    color: #E5989B;
+    border: 2px solid #E5989B;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-group button:hover {
+    background-color: #d3dbd9;
+}
+
+.direita-group selection {
+    text-color: gray;
+}
+
+.botao2-group button {
+    padding: 8px 16px;
+    background-color: #E5989B;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-group,
+.botao2-group {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+/* Título */
+.is-title {
+    color: #E5989B;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Estilos para a página "Sobre" */
+.card-dev-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-card .is-title {
+    color: #353030;
+    font-size: 4rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: inline-flex;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-card h2 {
+    align-items: center;
+    justify-content: center;
+}
+
+.container-card .button-sobre {
+    display: inline-flex;
+    height: 2.5rem;
+    padding: 0.75rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+}
+
+.container-card .card-dev {
+    display: flex;
+    flex-direction: row;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-card img {
+    margin: 24px;
+}
+
+/* Estilos do footer */
+footer {
+    width: 100%;
+    padding: 3%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
+}
+
+footer .links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+}
+
+footer a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+}
+
+footer a:hover {
+    background-color: #E5989B;
+    color: white;
+}
+/* Fim do footer */
+
+/* Estilos da barra de navegação */
+.navbar {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.logo-text {
+    color: #E5989B;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.navbar-text {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f8f9fa;
+    padding: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #E5989B;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+/* Fim dos estilos barra de navegacao*/
+
+/* Estilo Botão Criar Conta e Entrar */
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary {
+    background-color: #E5989B;
+    border-color: #E5989B;
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-outline-secondary {
+    color: black;
+    border-color: #ccc;
+    background-color: white;
+    border-radius: 5px;
+}
+/* Fim estilo Botão Criar Conta e Entrar */
+
+/* Dashboard */
+.dashboard-container canvas {
+    max-width: 900px;
+    margin: 90px auto;
+    padding: 20px 200px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+/* Fim Dashboard */
