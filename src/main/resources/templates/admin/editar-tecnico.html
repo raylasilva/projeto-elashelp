@@ -1,1 +1,124 @@
 <!-- /tecnico/editar/{matricula} -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/estilos/styles.css" rel="stylesheet">
+    <link rel="icon" href="/imagens/logo-preto.png">
+    <meta charset="UTF-8">
+    <title th:text="'Editar Perfil de ' + ${tecnico.nome}"></title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="logo-container">
+            <img src="/imagens/logo.png" alt="Logo" style="height: 40px;">
+            <span class="logo-text">KittyHelp</span>
+        </div>
+        <div class="navbar-nav mx-auto">
+            <a class="nav-link active" href="/home">Home</a>
+            <a class="nav-link" href="/home#estatisticas">Estatísticas</a>
+            <a class="nav-link" href="/home#tecnicos">Técnicos</a>
+            <a class="nav-link" href="/home#tickets">Chamados</a>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-expanded="false">
+                    Mais
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a href="/sobre">Desenvolvedoras</a>
+                    <a href="https://github.com/nicole-brito/projeto-elashelp">Documentação</a>
+                </div>
+            </div>
+        </div>
+        <div class="greeting-section" style="display: flex; align-items: center">
+            <span style="margin: 12px">Olá, <strong><span th:text="${nome}"></span></strong>!</span>
+            <span class="user-initials-circle"
+                  th:text="${#strings.toUpperCase(nome.charAt(0) + '' + nome.charAt(nome.indexOf(' ') + 1))}"></span>
+        </div>
+    </div>
+</nav>
+
+<div class="card" style="margin: 32px">
+    <div class="card-body">
+        <h2>Editar Técnico</h2>
+
+        <div th:if="${tecnico != null}">
+            <form th:action="@{/tecnico/editar/{id}(id=${tecnico.idTecnico})}" th:object="${tecnico}" method="post">
+                <input type="hidden" th:field="*{idTecnico}">
+
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" class="form-control" th:value="${tecnico.nome}">
+                </div>
+
+                <div class="form-group">
+                    <label for="sobrenome">Sobrenome:</label>
+                    <input type="text" id="sobrenome" name="sobrenome" class="form-control" th:value="${tecnico.sobrenome}">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="text" id="telefone" name="telefone" class="form-control" th:value="${tecnico.telefone}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" th:value="${tecnico.email}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="matricula">Matricula:</label>
+                    <input type="text" id="matricula" name="matricula" class="form-control" th:value="${tecnico.matricula}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="setor">Setor</label>
+                    <select class="form-control" id="setor" th:field="*{setor}" required>
+                        <option value="">Selecione um Setor</option>
+                        <option th:each="s : ${T(com.soulcode.elashelp.Models.Setor).values()}"
+                                th:value="${s}"
+                                th:text="${s}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="padding: 24px">
+                    <input type="checkbox" id="admin" name="admin" class="form-check-input"  th:checked="${tecnico.admin}">
+                    <label for="admin">Permissões de Administrador</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Salvar</button> &nbsp;
+                <a href="/home">Voltar para a lista de técnicos</a>
+            </form>
+        </div>
+
+        <div th:if="${tecnico == null}">
+            <p>Desculpe, não conseguimos encontrar o técnico solicitado.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <img src="/imagens/logo-preto.png" alt="Logo KittyHelp">
+    <div class="links">
+        <p><strong>SOBRE A KITTYHELP</strong></p>
+        <a href="/">Como funciona</a><br>
+        <a href="/">Soluções</a><br>
+        <a href="https://github.com/nicole-brito/projeto-elashelp">Documentação</a>
+    </div>
+    <div class="links">
+        <p><strong>SOBRE NÓS</strong></p>
+        <a href="/sobre">As Desenvolvedoras</a><br>
+        <a href="https://soulcode.com">A SoulCode</a>
+    </div>
+    <a href="/home" class="client-area-link">
+        Página Inicial
+        <i class="fa-solid fa-arrow-right-long"></i>
+    </a>
+</footer>
+
+</body>
+</html>

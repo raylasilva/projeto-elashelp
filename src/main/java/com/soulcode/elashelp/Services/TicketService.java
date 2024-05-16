@@ -2,17 +2,16 @@ package com.soulcode.elashelp.Services;
 
 import com.soulcode.elashelp.Models.Status;
 import com.soulcode.elashelp.Models.Ticket;
+import com.soulcode.elashelp.Models.Usuario;
 import com.soulcode.elashelp.Repositories.TicketRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.soulcode.elashelp.Repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +21,12 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     public List<Ticket> findAllTickets() {
         return ticketRepository.findAll();
     }
@@ -29,26 +34,46 @@ public class TicketService {
     public Optional<Ticket> findTicketById(Integer id) {
         return ticketRepository.findById(id);
     }
+    public List<Ticket> findTicketsByUsuario(Usuario usuario) {
+        return ticketRepository.findByUsuario(usuario);
+    }
 
     public Ticket saveTicket(Ticket ticket) {
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicket(Integer id, Ticket ticketDetails) {
+    public Ticket createTicket(Ticket ticket, Usuario usuario) {
+       ticketRepository.findByUsuario(usuario);
+        ticket.setUsuario(usuario);
+
+        ticket = ticketRepository.save(ticket);
+        return ticket;
+    }
+
+
+    public Ticket updateTicket(Integer id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id " + id));
 
-        ticket.setTitulo(ticketDetails.getTitulo());
-        ticket.setDescricao(ticketDetails.getDescricao());
-        ticket.setStatus(ticketDetails.getStatus());
-        ticket.setPrioridade(ticketDetails.getPrioridade());
-        ticket.setData(ticketDetails.getData());
-        ticket.setSetor(ticketDetails.getSetor());
+        ticket.setTitulo(ticket.getTitulo());
+        ticket.setDescricao(ticket.getDescricao());
+        ticket.setStatus(ticket.getStatus());
+        ticket.setPrioridade(ticket.getPrioridade());
+        ticket.setData(ticket.getData());
+        ticket.setSetor(ticket.getSetor());
 
         return ticketRepository.save(ticket);
     }
 
+
     public void deleteTicket(Integer id) {
+        ticketRepository.deleteById(id);
+    }
+
+
+    public void deleteTickets(Integer id,Ticket ticket, Usuario usuario) {
+        ticketRepository.findByUsuario(usuario);
+        ticket.setUsuario(usuario);
         ticketRepository.deleteById(id);
     }
 
@@ -88,5 +113,10 @@ public class TicketService {
                 .collect(Collectors.groupingBy(ticket -> ticket.getStatus().toString(), Collectors.counting()));
     }
 
+    public Map<String, Long> getTicketsByPriority() {
+        List<Ticket> tickets = ticketRepository.findAll();
 
+        return tickets.stream()
+                .collect(Collectors.groupingBy(ticket -> ticket.getPrioridade().toString(), Collectors.counting()));
+    }
 }

@@ -1,10 +1,16 @@
 package com.soulcode.elashelp.Controllers.controllersMVC;
 
 
+import com.soulcode.elashelp.Models.Login;
+import com.soulcode.elashelp.Repositories.LoginRepository;
 import com.soulcode.elashelp.Services.LoginService;
 import com.soulcode.elashelp.Services.RedefinirSenhaService;
+import com.soulcode.elashelp.config.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +22,10 @@ public class LoginController {
 
 
     @Autowired
-    LoginService loginService;
+    private LoginRepository loginRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -33,12 +42,34 @@ public class LoginController {
     public String processarLogin(Model model, String email, String senha) {
         model.addAttribute("email", email);
         model.addAttribute("senha", senha);
-        if (loginService.verificarLogin(email, senha)) {
-            return "entrar";
-        } else {
-            model.addAttribute("error", "Email ou senha inválidos!");
-            return "login";
+
+        UsernamePasswordAuthenticationToken usernamePassword;
+        Authentication authentication;
+        try {
+            usernamePassword = new UsernamePasswordAuthenticationToken(email, senha);
+            authentication = this.authenticationManager.authenticate(usernamePassword);
+        } catch (Exception ex) {
+            return "redirect:/unauthorized";
         }
+
+        var role = authentication.getAuthorities().stream().findFirst().get().toString();
+        var autenticado = authentication.isAuthenticated();
+
+        Login usuarioLogado = loginRepository.findLoginByEmail(email);
+        //TODO redefinir retornos em caso de administrador ou tenico ou usuario
+        //se o retorno for com redirect precisar passar o email do usuario logado como o exemplo da roda de usuario
+        if(autenticado && role.equals("ADMINISTRADOR")){
+            return "index";
+        } else if (autenticado && role.equals("TECNICO")){
+            return "tickets-tecnico";
+        } else if(role.equals("USUARIO")) {
+            return "redirect:/tickets/todos/" + usuarioLogado.getUsuario().getIdUsuario() + "?email=" + usuarioLogado.getEmail();
+        } else return "login";
+    }
+
+    @GetMapping("/unauthorized")
+    public String unauthorized(){
+        return "unauthorized";
     }
 
     @GetMapping("/escolhercadastro")
@@ -51,6 +82,7 @@ public class LoginController {
     public String esquece() {
         return "esqueceuasenha.html";
     }
+
     @GetMapping("redefinirsenha")
     public String redefinir() {
         return "redefinirsenha.html";
@@ -60,18 +92,19 @@ public class LoginController {
     @PostMapping("/esqueceuasenha")
     public String esqueceuSenha(@RequestParam String email, Model model) {
         model.addAttribute("email", email);
-            try {
-               redefinirSenhaService.enviarNotificacao(email);
-                return "redirect:/redefinirsenha";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "esqueceuasenha";
-            }
+        try {
+            redefinirSenhaService.enviarNotificacao(email);
+            return "redirect:/redefinirsenha";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "esqueceuasenha";
         }
+    }
+
     @PostMapping("/redefinirsenha")
     public String redefinirSenha(@RequestParam String token, @RequestParam String senha, Model model) {
-        model.addAttribute("senha",senha);
-        model.addAttribute("resetToken",token);
+        model.addAttribute("senha", senha);
+        model.addAttribute("resetToken", token);
         if (redefinirSenhaService.redefinicaoSenha(token, senha)) {
             return "redirect:/login";
         } else {
@@ -79,6 +112,7 @@ public class LoginController {
             return "redefinirsenha"; // Retorna à página de esqueceu a senha
         }
     }
+}
 
-    }
+
 

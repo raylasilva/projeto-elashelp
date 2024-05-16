@@ -2,7 +2,6 @@ package com.soulcode.elashelp.Controllers.controllersREST;
 
 import com.soulcode.elashelp.Models.Setor;
 import com.soulcode.elashelp.Models.Ticket;
-import com.soulcode.elashelp.Models.Usuario;
 import com.soulcode.elashelp.Services.TicketService;
 import com.soulcode.elashelp.Services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class TicketController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable Integer id, @RequestBody Ticket ticketDetails) {
-        Ticket updatedTicket = ticketService.updateTicket(id, ticketDetails);
+        Ticket updatedTicket = ticketService.updateTicket(id);
         return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
     }
 
@@ -82,5 +81,10 @@ public class TicketController {
     @GetMapping("/by-status")
     public Map<String, Long> getTicketsByStatus() {
         return ticketService.getTicketsByStatus();
+    }
+
+    @GetMapping("/by-priority")
+    public Map<String, Long> getTicketsByPriority() {
+        return ticketService.getTicketsByPriority();
     }
 }

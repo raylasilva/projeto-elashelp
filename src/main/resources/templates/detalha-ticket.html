@@ -4,11 +4,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/estilos/navbar.css" rel="stylesheet">
     <link href="/estilos/styles.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Detalhes do Ticket</title>
+    <link rel="icon" href="/imagens/logo-preto.png">
+
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
@@ -17,15 +19,15 @@
             <span class="logo-text">KittyHelp</span>
         </div>
         <div class="navbar-nav mx-auto">
-            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link active" href="/">Home</a>
             <a class="nav-link" href="#">Serviços</a>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                     Mais
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Subitem 1</a>
-                    <a class="dropdown-item" href="#">Subitem 2</a>
+                    <a href="/sobre">Desenvolvedoras</a>
+                    <a href="https://github.com/nicole-brito/projeto-elashelp">Documentação</a>
                 </div>
             </div>
         </div>
@@ -35,10 +37,12 @@
         </div>
     </div>
 </nav>
-
-<h1>Detalhes do Ticket</h1>
+<br>
+<div class="login-container">
+<h2>Detalhes do Ticket</h2>
 
 <div th:if="${ticket != null}">
+    <input type="hidden" name="idUsuario" th:value="${idUsuario}" />
     <p><strong>ID:</strong> <span th:text="${ticket.id}"></span></p>
     <p><strong>Assunto:</strong> <span th:text="${ticket.titulo}"></span></p>
     <p><strong>Descrição:</strong> <span th:text="${ticket.descricao}"></span></p>
@@ -54,6 +58,11 @@
     <p>Desculpe, não conseguimos encontrar o ticket solicitado.</p>
 </div>
 
-<a href="/tickets/todos">Voltar para a lista de tickets</a>
+
+<a th:href="@{/tickets/todos/{idUsuario}(idUsuario=${ticket.usuario.getIdUsuario()})}">Voltar para a lista de tickets</a>
+
+</div>
+
+
 </body>
 </html>

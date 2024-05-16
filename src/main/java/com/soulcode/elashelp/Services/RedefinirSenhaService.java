@@ -8,6 +8,7 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
@@ -62,9 +63,9 @@ public class RedefinirSenhaService {
     }
 
     //envio de email para redefinir senha
-    private  Message prepararNotificacao(Session session, String minhaContaDeEmail, String email) {
+    private Message prepararNotificacao(Session session, String minhaContaDeEmail, String email) {
 
-        Login user = loginRepository.findByEmail(email);
+        Login user = loginRepository.findLoginByEmail(email);
         if (user != null) {
             String token = UUID.randomUUID().toString();
             user.setResetToken(token);
@@ -85,16 +86,19 @@ public class RedefinirSenhaService {
             return null;
         }
 
-return null;
+        return null;
     }
 
-//metodo pra verificar token e atualizar senha no banco
+    //metodo pra verificar token e atualizar senha no banco
     public boolean redefinicaoSenha(String token, String senha) {
         Login user = loginRepository.findByResetToken(token);
 
 
-        if (user != null && token.equals(user.getResetToken()) ) {
+        if (user != null && token.equals(user.getResetToken())) {
             user.setSenha(senha);//atualiza senha na tabela de login
+            String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+            user.setSenha(encryptedPassword); //criptografia da senha
+
             user.setResetToken(null); // Limpar o token após a senha ser atualizada
             loginRepository.save(user);
             return true;

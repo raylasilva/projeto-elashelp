@@ -1,13 +1,13 @@
-<!-- /tecnicos/todos -->
+<!-- /tecnico/todos -->
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/estilos/navbar.css" rel="stylesheet">
     <link href="/estilos/styles.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Lista de Técnicos</title>
+    <link rel="icon" href="/imagens/logo-preto.png">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -17,54 +17,58 @@
             <span class="logo-text">KittyHelp</span>
         </div>
         <div class="navbar-nav mx-auto">
-            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link active" href="/admin/home">Home</a>
             <a class="nav-link" href="#">Serviços</a>
             <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-expanded="false">
                     Mais
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Subitem 1</a>
-                    <a class="dropdown-item" href="#">Subitem 2</a>
+                    <a href="/sobre">Desenvolvedoras</a>
+                    <a href="https://github.com/nicole-brito/projeto-elashelp">Documentação</a>
                 </div>
             </div>
         </div>
         <div class="greeting-section">
-<!--            <span>Olá, <span th:text="${tecnico.nome + ' ' + tecnico.sobrenome}" ></span>!</span>-->
-            <!--            <span class="user-initials-circle" th:text="${#strings.toUpperCase(usuario.)}"></span>-->
+            <span>Olá, <span th:text="${nome}"></span>!</span>
+            <!--            <span class="user-initials-circle" th:text="${#strings.toUpperCase(nome.charAt(0) + '' + nome.charAt(nome.indexOf(' ') + 1))}"></span>-->
         </div>
     </div>
 </nav>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Técnicos</h2>
-    <br>
+<div class=" card-tecnico">
+    <div class="card-body">
+        <h2 class="mb-4">Técnicos</h2>
+        <br>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Matrícula</th>
-            <th>Nome</th>
-            <th>Setor</th>
-            <th>Administrador</th>
-            <th>Email</th>
-            <th>Telefone</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="tecnico : ${tecnicos}">
-            <td th:text="${tecnico.matricula}"></td>
-            <td th:text="${tecnico.nome + ' ' + tecnico.sobrenome}"></td>
-            <td th:text="${tecnico.setor}"></td>
-            <td th:text="${tecnico.admin ? 'Sim' : 'Não'}"></td>
-            <td th:text="${tecnico.email}"></td>
-            <td th:text="${tecnico.telefone}"></td>
-            <td>
-                <a th:href="@{/editar-tecnico.html}" class="btn btn-primary btn-sm">Editar perfil</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>Setor</th>
+                <th>Administrador</th>
+                <th>Email</th>
+                <th>Telefone</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tecnico : ${tecnicos}">
+                <td th:text="${tecnico.matricula}"></td>
+                <td th:text="${tecnico.nome + ' ' + tecnico.sobrenome}"></td>
+                <td th:text="${tecnico.setor}"></td>
+                <td th:text="${tecnico.admin ? 'Sim' : 'Não'}"></td>
+                <td th:text="${tecnico.email}"></td>
+                <td th:text="${tecnico.telefone}"></td>
+                <td>
+                    <a th:href="@{/tecnico/editar/{id}(id=${tecnico.idTecnico})}" class="btn btn-primary btn-sm">Editar
+                        perfil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -89,7 +93,6 @@
         }
     });
 </script>
-
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -33,11 +33,12 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+
     @ManyToOne
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "tecnico_matricula", referencedColumnName = "matricula", nullable = true) // a coluna pode ser nula
+    @JoinColumn(name = "tecnico_matricula", referencedColumnName = "idTecnico", nullable = true) // a coluna pode ser nula
     private Tecnico tecnico;
 }

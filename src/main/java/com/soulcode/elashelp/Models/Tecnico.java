@@ -14,8 +14,10 @@ import java.util.List;
 @Table(name = "tecnicos")
 public class Tecnico {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long matricula;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTecnico;
+
+    private String matricula;
 
     private boolean admin;
 

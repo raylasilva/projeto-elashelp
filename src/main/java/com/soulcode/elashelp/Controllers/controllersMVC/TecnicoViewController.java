@@ -1,6 +1,7 @@
 package com.soulcode.elashelp.Controllers.controllersMVC;
 
 import com.soulcode.elashelp.Models.Tecnico;
+import com.soulcode.elashelp.Services.LoginService;
 import com.soulcode.elashelp.Services.TecnicoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tecnico")
 @RequiredArgsConstructor
 @Slf4j
 public class TecnicoViewController {
+
+    @Autowired
+    private LoginService loginService;
 
     @Autowired
     private TecnicoService tecnicoService;
@@ -46,27 +51,40 @@ public class TecnicoViewController {
     public String showAllTecnicos(Model model) {
         List<Tecnico> tecnicos = tecnicoService.findAll();
         model.addAttribute("tecnicos", tecnicos);
-        return "admin/tecnicos";
+        return "admin/dashboard";
     }
 
-    // @PreAuthorize("admin(true)")
-    @PostMapping("/editar/{matricula}")
-    public String deleteTecnico(@PathVariable Long matricula, RedirectAttributes redirectAttributes) {
-        try {
-            tecnicoService.deleteById(matricula);
-            redirectAttributes.addFlashAttribute("sucess", "Técnico deletado com sucesso!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Erro ao deletar técnico.");
+//    @DeleteMapping("/excluir/{id}")
+//    public String deleteTecnico(@PathVariable("id") Long id) {
+//        tecnicoService.deleteById(id);
+//        return "redirect:/tecnico/todos";
+//    }
+
+    // Método GET para exibir o formulário de edição
+    @GetMapping("/editar/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Optional<Tecnico> tecnico = Optional.ofNullable(tecnicoService.findById(id));
+        if (tecnico.isPresent()) {
+            model.addAttribute("tecnico", tecnico.get());
+            return "admin/editar-tecnico";
+        } else {
+            model.addAttribute("error", "Técnico não encontrado.");
+            return "redirect:/tecnico/todos";
         }
-        return "redirect:/tecnico/todos";
+    }
+
+    // Método POST para processar o formulário de edição
+    @PostMapping("/editar/{id}")
+    public String processEditForm(@ModelAttribute("tecnico") Tecnico tecnico, RedirectAttributes redirectAttributes) {
+        try {
+            tecnicoService.updateTecnico(tecnico);
+            redirectAttributes.addFlashAttribute("success", "Técnico atualizado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erro ao atualizar técnico.");
+        }
+        return "redirect:/home";
     }
 
 
-    // @PreAuthorize("admin(true)")
-    @GetMapping("/editar/{matricula}")
-    public String editarTecnico(@PathVariable Long matricula, Model model) {
-        Tecnico tecnico = tecnicoService.findById(matricula);
-        model.addAttribute("tecnico", tecnico);
-        return "admin/editar-tecnico";
-    }
+
 }

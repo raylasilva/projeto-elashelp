@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/api/tecnicos")
 public class TecnicoController {
 
     @Autowired
@@ -60,19 +61,19 @@ public class TecnicoController {
         }
     }
 
-    @DeleteMapping("/{matricula}")
-    public ResponseEntity<?> deleteById(@PathVariable Long matricula) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         try {
-            String deleteById = tecnicoService.deleteById(matricula);
-            return new ResponseEntity<>(deleteById, HttpStatus.OK);
+            tecnicoService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             log.error("Erro ao deletar técnico");
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/{matricula}")
-    public ResponseEntity<?> updateMatricula(@RequestBody Tecnico tecnico) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateid(@RequestBody Tecnico tecnico) {
         try {
             Tecnico updateTecnico = tecnicoService.updateTecnico(tecnico);
             return new ResponseEntity<>(updateTecnico, HttpStatus.OK);
@@ -82,5 +83,8 @@ public class TecnicoController {
         }
     }
 
-
+    @PostMapping()
+    public Tecnico createTecnico(@RequestBody Tecnico tecnico) {
+        return tecnicoService.createTecnico(tecnico);
+    }
 }
