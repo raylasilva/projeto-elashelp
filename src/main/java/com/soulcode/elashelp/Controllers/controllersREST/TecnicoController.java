@@ -14,8 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/tecnicos")
@@ -24,32 +23,11 @@ public class TecnicoController {
     @Autowired
     private TecnicoService tecnicoService;
 
-
-//    @GetMapping("cadastrotecnico")
-//    public String cadastroTecnico(@ModelAttribute("tecnico") final Tecnico tecnico) {
-//        return "cadastro-tecnico.html";
-//    }
-//
-//    @PostMapping("/cadastrotecnico")
-//    public String createTecnico(@ModelAttribute Tecnico tecnico, Model model) {
-//        try {
-//            Tecnico createTecnico = tecnicoService.createTecnico(tecnico);
-//            model.addAttribute("tecnico", createTecnico);
-//            model.addAttribute("success", "Cadastro realizado com sucesso!");
-//            return "redirect:/login";
-//        } catch (RuntimeException e) {
-//            log.error("Erro ao criar novo tecnico", e);
-//            model.addAttribute("error", e.getMessage());
-//            return "cadastro-tecnico";
-//        }
-//    }
-
-    //Method get
-
-    @GetMapping("/{matricula}")
-    public ResponseEntity<?> getTecnicoById(@PathVariable Long matricula) {
+    // Get
+    @GetMapping("/{idTecnico}")
+    public ResponseEntity<?> getTecnicoById(@PathVariable Long idTecnico) {
         try {
-            Tecnico tecnico = tecnicoService.findById(matricula);
+            Tecnico tecnico = tecnicoService.findById(idTecnico);
             if (tecnico != null) {
                 return ResponseEntity.ok(tecnico);
             } else {
@@ -61,10 +39,17 @@ public class TecnicoController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+    // Post
+    @PostMapping()
+    public Tecnico createTecnico(@RequestBody Tecnico tecnico) {
+        return tecnicoService.createTecnico(tecnico);
+    }
+
+    // Delete
+    @DeleteMapping("deletar/{idTecnico}")
+    public ResponseEntity<?> deleteById(@PathVariable Long idTecnico) {
         try {
-            tecnicoService.deleteById(id);
+            tecnicoService.deleteById(idTecnico);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             log.error("Erro ao deletar técnico");
@@ -72,7 +57,8 @@ public class TecnicoController {
         }
     }
 
-    @PutMapping("/{id}")
+    // Put
+    @PutMapping("atualizar/{idTecnico}")
     public ResponseEntity<?> updateid(@RequestBody Tecnico tecnico) {
         try {
             Tecnico updateTecnico = tecnicoService.updateTecnico(tecnico);
@@ -83,8 +69,5 @@ public class TecnicoController {
         }
     }
 
-    @PostMapping()
-    public Tecnico createTecnico(@RequestBody Tecnico tecnico) {
-        return tecnicoService.createTecnico(tecnico);
-    }
+
 }

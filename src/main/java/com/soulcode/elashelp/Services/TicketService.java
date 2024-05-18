@@ -1,10 +1,12 @@
 package com.soulcode.elashelp.Services;
 
+import com.soulcode.elashelp.Models.Setor;
 import com.soulcode.elashelp.Models.Status;
 import com.soulcode.elashelp.Models.Ticket;
 import com.soulcode.elashelp.Models.Usuario;
 import com.soulcode.elashelp.Repositories.TicketRepository;
 import com.soulcode.elashelp.Repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TicketService {
 
     @Autowired
@@ -34,6 +37,7 @@ public class TicketService {
     public Optional<Ticket> findTicketById(Integer id) {
         return ticketRepository.findById(id);
     }
+
     public List<Ticket> findTicketsByUsuario(Usuario usuario) {
         return ticketRepository.findByUsuario(usuario);
     }
@@ -50,7 +54,6 @@ public class TicketService {
         return ticket;
     }
 
-
     public Ticket updateTicket(Integer id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket not found with id " + id));
@@ -65,11 +68,9 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-
     public void deleteTicket(Integer id) {
         ticketRepository.deleteById(id);
     }
-
 
     public void deleteTickets(Integer id,Ticket ticket, Usuario usuario) {
         ticketRepository.findByUsuario(usuario);
@@ -77,6 +78,9 @@ public class TicketService {
         ticketRepository.deleteById(id);
     }
 
+    public List<Ticket> getTicketsByTecnicoId(Integer idTecnico) {
+        return ticketRepository.findByTecnicoIdTecnico(idTecnico);
+    }
 
 //    Requisições para os gráficos
     public Map<String, Long > getOpenTicketsBySector() {
@@ -118,5 +122,9 @@ public class TicketService {
 
         return tickets.stream()
                 .collect(Collectors.groupingBy(ticket -> ticket.getPrioridade().toString(), Collectors.counting()));
+    }
+
+    public List<Ticket> findAllTicketsBySetor(Setor setor) {
+        return ticketRepository.findBySetor(setor);
     }
 }

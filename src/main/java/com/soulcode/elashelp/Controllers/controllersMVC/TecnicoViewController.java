@@ -6,6 +6,7 @@ import com.soulcode.elashelp.Services.TecnicoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,19 +47,12 @@ public class TecnicoViewController {
     }
 
     //Admin area
-    // @PreAuthorize("admin(true)")
     @GetMapping("/todos")
     public String showAllTecnicos(Model model) {
         List<Tecnico> tecnicos = tecnicoService.findAll();
         model.addAttribute("tecnicos", tecnicos);
         return "admin/dashboard";
     }
-
-//    @DeleteMapping("/excluir/{id}")
-//    public String deleteTecnico(@PathVariable("id") Long id) {
-//        tecnicoService.deleteById(id);
-//        return "redirect:/tecnico/todos";
-//    }
 
     // Método GET para exibir o formulário de edição
     @GetMapping("/editar/{id}")
@@ -82,7 +76,7 @@ public class TecnicoViewController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Erro ao atualizar técnico.");
         }
-        return "redirect:/home";
+        return "redirect:/admin/home";
     }
 
 

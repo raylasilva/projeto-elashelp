@@ -1,11 +1,11 @@
 <!-- /admin/home -->
 
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns="http://www.w3.org/1999/html">
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Olá, ' + ${nome} + '! | KittyHelp'"></title>
+    <title th:text="'Bem vindo, ' + ${nome} + '! | KittyHelp'"></title>
     <link rel="icon" href="/imagens/logo-preto.png">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/estilos/styles.css">
@@ -24,7 +24,7 @@
             <span class="logo-text">KittyHelp</span>
         </div>
         <div class="navbar-nav mx-auto">
-            <a class="nav-link active" href="/admin/home">Home</a>
+            <a class="nav-link" href="/admin/home">Inicio</a>
             <a class="nav-link" href="#estatisticas">Estatísticas</a>
             <a class="nav-link" href="#tecnicos">Técnicos</a>
             <a class="nav-link" href="#tickets">Chamados</a>
@@ -40,17 +40,18 @@
             </div>
         </div>
         <div class="greeting-section" style="display: flex; align-items: center">
-            <span style="margin: 12px">Olá, <strong><span th:text="${nome}"></span></strong>!</span>
+            <span style="margin: 12px">Bem vindo <strong><span th:text="${nome}"></span></strong>!</span>
             <span class="user-initials-circle"
                   th:text="${#strings.toUpperCase(nome.charAt(0) + '' + nome.charAt(nome.indexOf(' ') + 1))}"></span>
         </div>
+        <a style="margin-left: 8px" th:href="@{/logout}" class="btn btn-outline-danger">Sair</a>
     </div>
 </nav>
 
 <div id="estatisticas" class="card-tecnico" style="margin: 24px 10%; width: 55% ">
 
     <div class="card-body" style="width:auto">
-        <h2>Estátisticas</h2>
+        <h2>Estatísticas</h2>
         <div class="dashboard-container">
             <canvas id="ticketsbysetor"></canvas>
             <canvas id="ticketsbysetorestatus"></canvas>
@@ -104,18 +105,22 @@
                 <th>Data</th>
                 <th>Título</th>
                 <th>Setor</th>
+                <th>Status</th>
+                <th>Prioridade</th>
                 <th>Ações</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="ticket : ${tickets}">
+            <tr th:each="ticket : ${allTickets}">
                 <td th:text="${#dates.format(ticket.data, 'dd/MM/yyyy')}"></td>
                 <td th:text="${ticket.titulo}"></td>
                 <td th:text="${ticket.setor}"></td>
+                <td th:text="${ticket.status}"></td>
+                <td th:text="${ticket.prioridade}"></td>
                 <td>
                     <a th:href="@{/tickets/editar/{id}(id=${ticket.id})}" class="btn btn-primary btn-sm">Editar</a>
-
-                    <a th:href="@{/tickets/excluir/{id}(id=${ticket.id})}"
+<br>
+                    <a th:href="@{/api/ticket/{id}(id=${ticket.id})}"
                        class="btn btn-outline-danger btn-sm delete-ticket">Excluir</a>
                 </td>
             </tr>
@@ -182,6 +187,24 @@
             });
         });
     });
+
+    $(document).ready(function () {
+        $('.delete-ticket').on('click', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var userConfirmation = confirm('Tem certeza de que deseja excluir este ticket?');
+            if (userConfirmation) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function (result) {
+                        // Recarregar a página ou atualizar a tabela de tickets
+                        location.reload();
+                    }
+                });
+            }
+        });
+    });
 </script>
 
 
@@ -189,3 +212,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+</html>

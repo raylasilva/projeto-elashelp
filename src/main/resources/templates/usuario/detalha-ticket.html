@@ -35,11 +35,11 @@
                 </div>
             </div>
         </div>
-        <div class="greeting-section" style="display: flex; align-items: center">
-            <span style="margin: 12px">Olá, <strong><span th:text="${nome}"></span></strong>!</span>
-            <span class="user-initials-circle"
-                  th:text="${#strings.toUpperCase(nome.charAt(0) + '' + nome.charAt(nome.indexOf(' ') + 1))}"></span>
-        </div>
+<!--        <div class="greeting-section" style="display: flex; align-items: center">-->
+<!--            <span style="margin: 12px">Olá, <strong><span th:text="${nome}"></span></strong>!</span>-->
+<!--            <span class="user-initials-circle"-->
+<!--                  th:text="${#strings.toUpperCase(nome.charAt(0) + '' + nome.charAt(nome.indexOf(' ') + 1))}"></span>-->
+<!--        </div>-->
     </div>
 </nav>
 
@@ -68,7 +68,7 @@
 
     <div class="btn btn-outline-secondary">
         <i class="fa-solid fa-arrow-left"></i>
-        <a th:href="@{/tickets/todos/{idUsuario}(idUsuario=${ticket.usuario.getIdUsuario()})}">Voltar para a lista de
+        <a th:href="@{/usuario/home/{idUsuario}(idUsuario=${ticket.usuario.getIdUsuario()})}">Voltar para a lista de
             tickets</a>
     </div>
 
